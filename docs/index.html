@@ -167,7 +167,7 @@
     transition:background-color .3s ease,color .3s ease;
   }
   img,svg{display:block;max-width:100%;}
-  a{color:inherit;}
+  a{color:inherit;text-decoration:none;}
   h1,h2,h3,h4,p,figure{margin:0;}
   ul{margin:0;padding:0;list-style:none;}
   button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;}
@@ -413,19 +413,28 @@
   .pain-item p{color:var(--text-muted);font-size:.92rem;}
 
   /* ---------- how it works ---------- */
-  .steps-row{display:grid;grid-template-columns:repeat(3,1fr);gap:0;position:relative;}
-  @media (max-width:880px){.steps-row{grid-template-columns:1fr;gap:2.2rem;}}
+  /* all three cards get identical horizontal padding; the row is pulled out
+     by the same amount via negative margin so "01" still hugs the section's
+     left edge — this keeps the two card-to-card gaps pixel-identical, which
+     is what the connector arrows are anchored to. */
+  .steps-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;position:relative;margin-inline:-1.6rem;}
+  @media (max-width:880px){
+    .steps-row{grid-template-columns:1fr;gap:2.2rem;margin-inline:0;}
+    .step-card:first-child{padding-left:0;padding-right:1.6rem;}
+    .step-card:last-child{padding-left:1.6rem;padding-right:0;}
+  }
   .step-card{position:relative;padding:0 1.6rem;}
-  .step-card:first-child{padding-left:0;}
-  .step-card:last-child{padding-right:0;}
   .step-num{
     font-family:var(--font-mono);font-size:.8rem;color:var(--accent);font-weight:700;
-    display:flex;align-items:center;gap:.6rem;margin-bottom:1rem;
+    display:flex;align-items:center;gap:.6rem;margin-bottom:1rem;position:relative;
   }
   .step-num::after{content:"";flex:1;height:1px;background:var(--border-strong);}
   .step-card h3{margin-bottom:.6rem;}
   .step-connector{
-    position:absolute;top:9px;right:-1.1rem;width:2.2rem;height:1.4rem;
+    /* anchored to .step-num (not .step-card) so it always sits exactly on the
+       rule's vertical center, regardless of card padding or line-height. */
+    position:absolute;top:50%;right:-1.1rem;width:2.2rem;height:1.4rem;
+    transform:translateY(-50%);
     color:var(--gold-600);
   }
   @media (prefers-color-scheme:dark){.step-connector{color:var(--gold-400);}}
@@ -518,9 +527,12 @@
   .pricing-viewport{
     flex:1;min-width:0;overflow-x:auto;scroll-snap-type:x mandatory;
     -webkit-overflow-scrolling:touch;scrollbar-width:none;border-radius:var(--radius-lg);
+    cursor:grab;
   }
   .pricing-viewport::-webkit-scrollbar{display:none;}
   .pricing-viewport:focus-visible{outline-offset:6px;}
+  .pricing-viewport.is-dragging{cursor:grabbing;scroll-snap-type:none;user-select:none;-webkit-user-select:none;}
+  .pricing-viewport.is-dragging .pricing-card{pointer-events:none;}
   .pricing-track{display:flex;gap:1.25rem;padding:.6rem clamp(.4rem,5vw,1.5rem) 1rem;}
   @media (max-width:640px){.pricing-track{gap:1rem;}}
 
@@ -528,14 +540,24 @@
     scroll-snap-align:center;flex:0 0 min(84vw,308px);
     background:var(--ink-900);border:1px solid var(--stage-border);border-radius:var(--radius-lg);
     padding:1.6rem 1.5rem 1.7rem;display:flex;flex-direction:column;gap:1rem;
+    /* soft layered elevation: a tight contact shadow + a wide, low-opacity
+       ambient one reads as a gentle lift rather than a hard drop-shadow */
+    box-shadow:0 1px 2px rgba(0,0,0,.22),0 16px 32px -18px rgba(0,0,0,.45);
     transition:transform .25s cubic-bezier(.2,.8,.3,1),box-shadow .25s ease;
   }
-  .pricing-card:hover{transform:translateY(-4px);}
+  .pricing-card:hover{transform:translateY(-4px);box-shadow:0 2px 4px rgba(0,0,0,.24),0 22px 40px -16px rgba(0,0,0,.5);}
   @media (max-width:640px){.pricing-card{flex-basis:72vw;}}
   .pricing-card.is-highlight{
     border-color:var(--violet-500);
     background:linear-gradient(165deg,color-mix(in srgb,var(--violet-600) 20%,var(--ink-900)),var(--ink-900) 65%);
-    box-shadow:0 24px 50px -20px rgba(0,0,0,.55),0 0 0 1px var(--violet-500),0 0 44px -12px color-mix(in srgb,var(--violet-500) 55%,transparent);
+    /* same soft contact + ambient shadow, plus a smooth, even violet glow
+       (wide spread, low opacity) instead of a hard point-source bloom */
+    box-shadow:0 1px 2px rgba(0,0,0,.22),0 20px 38px -16px rgba(0,0,0,.5),
+      0 0 0 1px var(--violet-500),0 0 64px -8px color-mix(in srgb,var(--violet-500) 32%,transparent);
+  }
+  .pricing-card.is-highlight:hover{
+    box-shadow:0 2px 4px rgba(0,0,0,.24),0 26px 46px -14px rgba(0,0,0,.55),
+      0 0 0 1px var(--violet-500),0 0 72px -6px color-mix(in srgb,var(--violet-500) 38%,transparent);
   }
   .plan-card-head{display:flex;align-items:center;justify-content:space-between;gap:.6rem;}
   .plan-name{font-family:var(--font-display);font-weight:700;font-size:1.12rem;color:var(--stage-text);}
@@ -562,7 +584,9 @@
   @media (prefers-reduced-motion:reduce){.pricing-viewport{scroll-behavior:auto;}}
 
   /* ---------- FAQ ---------- */
-  .faq-list{display:flex;flex-direction:column;gap:.8rem;max-width:74ch;}
+  #faq .section-head{text-align:center;margin-inline:auto;}
+  #faq .section-head .lede{margin-inline:auto;}
+  .faq-list{display:flex;flex-direction:column;gap:.8rem;max-width:74ch;margin-inline:auto;}
   .faq-item{
     border:1px solid var(--border);border-radius:var(--radius-md);background:var(--bg-elevated);
     overflow:hidden;
@@ -748,20 +772,18 @@
       </div>
       <div class="steps-row reveal-group is-visible">
         <div class="step-card reveal-item" style="--i:0">
-          <div class="step-num">01</div>
+          <div class="step-num">01<span class="step-connector" aria-hidden="true">
+            <svg viewBox="0 0 40 22" fill="none"><path class="flow-dash" d="M2 11h30" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M26 4l8 7-8 7" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span></div>
           <h3 class="h-card">Author</h3>
           <p class="body-copy">Describe the flow the way you'd explain it to a teammate — tap, type, check. No selectors to hand-write, no script to debug.</p>
-          <span class="step-connector" aria-hidden="true">
-            <svg viewBox="0 0 40 22" fill="none"><path class="flow-dash" d="M2 11h30" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M26 4l8 7-8 7" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </span>
         </div>
         <div class="step-card reveal-item" style="--i:1">
-          <div class="step-num">02</div>
+          <div class="step-num">02<span class="step-connector" aria-hidden="true">
+            <svg viewBox="0 0 40 22" fill="none"><path class="flow-dash" d="M2 11h30" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M26 4l8 7-8 7" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span></div>
           <h3 class="h-card">Run</h3>
           <p class="body-copy">A real engine drives a real device or browser — deterministic, step by step, the same way every single time it runs.</p>
-          <span class="step-connector" aria-hidden="true">
-            <svg viewBox="0 0 40 22" fill="none"><path class="flow-dash" d="M2 11h30" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M26 4l8 7-8 7" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </span>
         </div>
         <div class="step-card reveal-item" style="--i:2">
           <div class="step-num">03</div>
@@ -1185,6 +1207,69 @@
     });
 
     setActivePlan(0);
+
+    /* pointer-drag to scroll: lets desktop/mouse users click-and-drag the
+       track, same as the existing touch scroll / arrow buttons / dots /
+       arrow keys. Touch is left to native scrolling. */
+    var dragIsDown = false, dragMoved = false, dragStartX = 0, dragStartScroll = 0, dragPointerId = null;
+    var DRAG_THRESHOLD = 6;
+
+    pricingViewport.addEventListener('pointerdown', function(ev){
+      if (ev.pointerType === 'touch') return;
+      dragIsDown = true;
+      dragMoved = false;
+      dragStartX = ev.clientX;
+      dragStartScroll = pricingViewport.scrollLeft;
+      dragPointerId = ev.pointerId;
+    });
+
+    pricingViewport.addEventListener('pointermove', function(ev){
+      if (!dragIsDown || ev.pointerId !== dragPointerId) return;
+      var dx = ev.clientX - dragStartX;
+      if (!dragMoved && Math.abs(dx) > DRAG_THRESHOLD) {
+        dragMoved = true;
+        pricingViewport.classList.add('is-dragging');
+        try { pricingViewport.setPointerCapture(dragPointerId); } catch (e) {}
+      }
+      if (dragMoved) {
+        ev.preventDefault();
+        pricingViewport.scrollLeft = dragStartScroll - dx;
+      }
+    });
+
+    function endPricingDrag(){
+      if (!dragIsDown) return;
+      dragIsDown = false;
+      if (dragPointerId !== null) { try { pricingViewport.releasePointerCapture(dragPointerId); } catch (e) {} }
+      if (dragMoved) {
+        pricingViewport.classList.remove('is-dragging');
+        /* scroll-snap was suspended during the drag — settle on whichever
+           card now sits closest to center */
+        var vpRect = pricingViewport.getBoundingClientRect();
+        var vpCenter = vpRect.left + vpRect.width / 2;
+        var nearest = 0, nearestDist = Infinity;
+        pricingCards.forEach(function(card, idx){
+          var r = card.getBoundingClientRect();
+          var dist = Math.abs((r.left + r.width / 2) - vpCenter);
+          if (dist < nearestDist) { nearestDist = dist; nearest = idx; }
+        });
+        scrollToPlan(nearest);
+        /* let the click handler (fires right after pointerup) see dragMoved
+           first, then clear it for the next interaction */
+        setTimeout(function(){ dragMoved = false; }, 0);
+      }
+      dragPointerId = null;
+    }
+
+    pricingViewport.addEventListener('pointerup', endPricingDrag);
+    pricingViewport.addEventListener('pointercancel', endPricingDrag);
+    pricingViewport.addEventListener('pointerleave', function(){ if (dragIsDown) endPricingDrag(); });
+
+    /* a drag that actually moved the track shouldn't also trigger the click
+       on whatever it's released over (e.g. the Free Trial download link) */
+    pricingViewport.addEventListener('click', function(ev){
+      if (dragMoved) { ev.preventDefault(); ev.stopPropagation(); }
+    }, true);
   }
 
   /* download CTAs link directly to the latest release .dmg (v0.1.0) */

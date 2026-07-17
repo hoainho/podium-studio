@@ -87,6 +87,36 @@ Everything runs locally. See [ARCHITECTURE.md](docs/ARCHITECTURE.md) for the ful
 - Record-for-web (click → step) + knowledge-backed self-heal for web
 - Windows & Linux builds · shared test libraries · team/cloud sync
 
+## How Codex & GPT-5.6 were used
+
+Podium Studio used OpenAI **Codex** and **GPT-5.6** in two distinct ways — during
+development, and as an optional in-product feature (never in the deterministic run path).
+
+### 1. Building the product with Codex
+
+- **Scaffolding & implementation** — Codex generated and iterated on large parts of the
+  Tauri + React + TypeScript app, the Node bridge (Express + WebSocket), and the Podium
+  MCP client wrapper.
+- **Flow IR & validation** — Codex helped design the closed 9-action Flow IR schema and its
+  Zod validation, plus the step-by-step runner.
+- **Tests & refactors** — Codex authored unit tests and drove refactors across the bridge
+  and UI.
+
+### 2. AI-assisted test authoring with GPT-5.6
+
+- **Natural language → draft Flow** — GPT-5.6 turns a plain-language description ("log in,
+  open settings, check that General appears") into a **draft** Flow in the validated IR.
+- **Human-reviewed, never in the run path** — the model only proposes a draft; the author
+  reviews it, and execution calls Podium's `run_steps` with the exact IR. **No model sits in
+  the deterministic run loop.**
+- **Self-healing selectors** — GPT-5.6 assists in suggesting alternative selectors when a
+  step can't resolve, keeping tests resilient across UI changes.
+- **Bring-your-own-key** — the OpenAI key is stored in the OS keychain and never leaves the
+  user's machine.
+
+> Design principle: **AI helps you author tests; it never decides the outcome of a run.**
+> Runs stay deterministic and reproducible.
+
 ## License
 
 Podium Studio is **proprietary** software, offered now as a **free trial** — paid plans may

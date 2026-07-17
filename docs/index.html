@@ -644,7 +644,7 @@
         <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.4"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>
         <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z"/></svg>
       </button>
-      <a class="btn btn-outline btn-sm" href="#trial">Download trial</a>
+      <a class="btn btn-outline btn-sm" href="https://github.com/hoainho/podium-studio/releases/download/v0.1.0/PodiumStudio-0.1.0-macos-arm64.dmg">Download trial</a>
     </div>
   </div>
 </header>
@@ -668,7 +668,7 @@
         </h1>
         <p class="lede anim-in d4">Podium Studio turns testing into plain steps — tap, type, check. An intern, a junior QA, or an engineer with zero automation background can author and run a real mobile or web test today, not after a training program.</p>
         <div class="hero-ctas anim-in d5">
-          <a class="btn btn-primary" href="#trial">Download the free trial</a>
+          <a class="btn btn-primary" href="https://github.com/hoainho/podium-studio/releases/download/v0.1.0/PodiumStudio-0.1.0-macos-arm64.dmg">Download the free trial</a>
           <a class="btn btn-ghost" href="#how-it-works">See how it works</a>
         </div>
         <p class="trial-note anim-in d6">Free trial now · paid plans coming soon</p>
@@ -893,7 +893,7 @@
                 <li>Bilingual — English and Vietnamese</li>
                 <li>Local-first: your flows, your machine</li>
               </ul>
-              <a class="btn btn-primary plan-cta" href="#" id="downloadCta">Download the free trial</a>
+              <a class="btn btn-primary plan-cta" href="https://github.com/hoainho/podium-studio/releases/download/v0.1.0/PodiumStudio-0.1.0-macos-arm64.dmg" id="downloadCta">Download the free trial</a>
             </li>
 
             <li class="pricing-card" tabindex="0" aria-roledescription="slide" aria-label="2 of 4: Pro">
@@ -1023,7 +1023,7 @@
       <div class="footer-col">
         <h4>Get started</h4>
         <ul>
-          <li><a href="#trial">Download the trial</a></li>
+          <li><a href="https://github.com/hoainho/podium-studio/releases/download/v0.1.0/PodiumStudio-0.1.0-macos-arm64.dmg">Download the trial</a></li>
           <li><a href="#faq">FAQ</a></li>
         </ul>
       </div>
@@ -1185,15 +1185,7 @@
     setActivePlan(0);
   }
 
-  /* trial CTA is a marketing placeholder — no real download endpoint yet */
-  var dl = document.getElementById('downloadCta');
-  if (dl) {
-    dl.addEventListener('click', function(ev){
-      ev.preventDefault();
-      dl.textContent = 'Coming very soon — thanks!';
-      setTimeout(function(){ dl.textContent = 'Download the free trial'; }, 2400);
-    });
-  }
+  /* download CTAs link directly to the latest release .dmg (v0.1.0) */
 })();
 </script>
 </body>

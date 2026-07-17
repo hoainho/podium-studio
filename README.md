@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="brand/mark.svg" alt="Podium Studio" width="96" height="96" />
+<img src="brand/icon.svg" alt="Podium Studio" width="112" height="112" />
 
 # Podium Studio
 

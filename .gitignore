@@ -1,0 +1,30 @@
+node_modules/
+dist/
+dist-ssr/
+*.local
+.DS_Store
+.env
+.env.*
+artifacts/
+qa/runs/
+src-tauri/target/
+*.log
+
+# E9 SQLite two-tier storage (data/{cache,primary}.sqlite[-wal|-shm], data/backups/) — the
+# primary store holds real run history + artifacts index; never committed (security MAJOR fix:
+# this directory was missing from .gitignore entirely, meaning `git add -A` could stage a
+# database file straight into the repo).
+data/
+
+# E8 packaging build artifacts — produced by npm run sidecar:build / vendor:podium /
+# manifest:generate; regenerated per-build, never hand-edited, and too large/machine-specific to
+# commit (the sidecar binary alone is ~100MB+ per platform). See src-tauri/README.md.
+.build/
+src-tauri/binaries/
+src-tauri/resources/
+src-tauri/bundle-manifest.json
+src-tauri/gen/
+
+# OMC state + one-off CDP visual-check scripts (dev only)
+.omc/
+scripts/cdp-*.mjs

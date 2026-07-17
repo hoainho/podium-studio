@@ -1,0 +1,524 @@
+/* ============================================================================
+   IntroLoader — brand intro played once while the local engine connects.
+   Self-scoped under `.intro-loader`: every rule is nested/prefixed so this file
+   cannot collide with the app's global styles.css. No external assets, fonts,
+   or network calls — CSP-safe and fully offline.
+   ========================================================================== */
+
+.intro-loader {
+  /* --- palette (own tokens; not read from the app's global :root) --- */
+  --intro-bg-1: #f3f0fb;
+  --intro-bg-2: #e9e3fb;
+  --intro-panel: #ffffff;
+  --intro-panel-line: #ded6f2;
+  --intro-screen: #f7f5fd;
+  --intro-ink: #1c1730;
+  --intro-ink-muted: #6d6390;
+  --intro-ring: #cdc0ef;
+  --intro-ok: #16a34a;
+  --intro-star-opacity: 0.18;
+  --intro-ease: cubic-bezier(0.16, 1, 0.3, 1);
+
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: radial-gradient(120% 140% at 50% 20%, var(--intro-bg-2), var(--intro-bg-1));
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+@media (prefers-color-scheme: dark) {
+  .intro-loader {
+    --intro-bg-1: #0a0a12;
+    --intro-bg-2: #14111f;
+    --intro-panel: #16141f;
+    --intro-panel-line: #2c2846;
+    --intro-screen: #0d0c16;
+    --intro-ink: #f4f2fb;
+    --intro-ink-muted: #a79dcf;
+    --intro-ring: #3a3560;
+    --intro-ok: #22c55e;
+    --intro-star-opacity: 0.55;
+  }
+}
+
+.intro-loader--exit {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.intro-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* --- aurora backdrop: three blurred, slow-drifting blobs + a faint star field.
+   transform-only animation (GPU compositable); blur is applied once per element. --- */
+.intro-loader__aurora {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.intro-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(64px);
+  will-change: transform;
+  animation: intro-drift 14s ease-in-out infinite;
+}
+
+.intro-blob--a {
+  width: 46vmax;
+  height: 46vmax;
+  left: -14vmax;
+  top: -18vmax;
+  background: radial-gradient(circle, #6d5cf655, transparent 70%);
+  animation-delay: -2s;
+}
+
+.intro-blob--b {
+  width: 40vmax;
+  height: 40vmax;
+  right: -12vmax;
+  bottom: -16vmax;
+  background: radial-gradient(circle, #8b7bff4d, transparent 70%);
+  animation-delay: -7s;
+}
+
+.intro-blob--c {
+  width: 30vmax;
+  height: 30vmax;
+  left: 50%;
+  top: 55%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, #4b3fd633, transparent 72%);
+  animation-delay: -4s;
+}
+
+.intro-stars {
+  position: absolute;
+  inset: 0;
+  opacity: var(--intro-star-opacity);
+  background-image:
+    radial-gradient(1.5px 1.5px at 20% 30%, #fff, transparent 100%),
+    radial-gradient(1.5px 1.5px at 70% 18%, #fff, transparent 100%),
+    radial-gradient(1px 1px at 85% 55%, #fff, transparent 100%),
+    radial-gradient(1.5px 1.5px at 35% 70%, #fff, transparent 100%),
+    radial-gradient(1px 1px at 60% 82%, #fff, transparent 100%),
+    radial-gradient(1px 1px at 12% 88%, #fff, transparent 100%);
+  animation: intro-twinkle 5s ease-in-out infinite;
+}
+
+@keyframes intro-drift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(3%, -4%, 0) scale(1.08);
+  }
+  100% {
+    transform: translate3d(-2%, 3%, 0) scale(1);
+  }
+}
+
+@keyframes intro-twinkle {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* --- stage: device (Record/Run) then brand (Trace) share the same slot --- */
+.intro-stage {
+  position: relative;
+  display: grid;
+  grid-template-areas: "slot";
+  place-items: center;
+  width: min(88vw, 320px);
+}
+
+.intro-stage__device,
+.intro-stage__brand {
+  grid-area: slot;
+}
+
+/* A single timeline (rather than two stacked `animation`s) so the fade-in and the later
+   fade-out never fight over the same opacity/transform properties — with two separate
+   animations, the second one's backwards-fill would hold its "before" state (opacity: 1)
+   for the whole 0–1.5s delay and silently cancel the entrance fade. */
+.intro-stage__device {
+  animation: intro-device-lifecycle 1.74s var(--intro-ease) both;
+}
+
+@keyframes intro-device-lifecycle {
+  0% {
+    opacity: 0;
+    transform: scale(0.92) translateY(6px);
+  }
+  26% {
+    opacity: 1;
+    transform: none;
+  }
+  86% {
+    opacity: 1;
+    transform: none;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.96) translateY(-10px);
+  }
+}
+
+/* --- phone frame --- */
+.intro-phone {
+  position: relative;
+  width: 148px;
+  height: 268px;
+  border-radius: 22px;
+  background: var(--intro-panel);
+  border: 1.5px solid var(--intro-panel-line);
+  box-shadow: 0 24px 60px -20px rgba(24, 12, 60, 0.35);
+}
+
+.intro-phone__notch {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  width: 36px;
+  height: 5px;
+  transform: translateX(-50%);
+  border-radius: 3px;
+  background: var(--intro-panel-line);
+}
+
+.intro-phone__screen {
+  position: absolute;
+  inset: 22px 10px 12px;
+  border-radius: 14px;
+  background: var(--intro-screen);
+  overflow: hidden;
+}
+
+/* --- record moment: tap dot + ripple, positioned like a button being tapped --- */
+.intro-tap-dot,
+.intro-ripple {
+  position: absolute;
+  left: 50%;
+  top: 30%;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.intro-tap-dot {
+  width: 10px;
+  height: 10px;
+  background: var(--intro-ink-muted);
+  opacity: 0;
+  animation: intro-tap-pulse 0.24s ease-out 0.38s both;
+}
+
+.intro-ripple {
+  width: 10px;
+  height: 10px;
+  border: 1.5px solid #8b7bff;
+  opacity: 0;
+  animation: intro-ripple 0.5s ease-out 0.42s both;
+}
+
+@keyframes intro-tap-pulse {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.4);
+  }
+  55% {
+    opacity: 0.9;
+    transform: translate(-50%, -50%) scale(1.15);
+  }
+  100% {
+    opacity: 0.7;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes intro-ripple {
+  0% {
+    opacity: 0.55;
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(6.5);
+  }
+}
+
+/* --- run moment: the step cascade --- */
+.intro-steps {
+  position: absolute;
+  inset: 46% 12px 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.intro-step {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  opacity: 0;
+  transform: translateY(6px);
+  animation: intro-rise 0.22s var(--intro-ease) both;
+  color: var(--intro-ink);
+}
+
+.intro-step:nth-child(1) {
+  animation-delay: 0.65s;
+}
+.intro-step:nth-child(2) {
+  animation-delay: 0.87s;
+}
+.intro-step:nth-child(3) {
+  animation-delay: 1.09s;
+}
+
+@keyframes intro-rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.intro-step__glyph svg {
+  width: 13px;
+  height: 13px;
+  display: block;
+}
+
+.intro-glyph-ring {
+  fill: none;
+  stroke: var(--intro-ink-muted);
+  stroke-width: 1.3;
+  stroke-linecap: round;
+}
+
+.intro-glyph-dot {
+  fill: var(--intro-ink-muted);
+  stroke: none;
+}
+
+.intro-step__label {
+  font: 500 11.5px/1 -apple-system, BlinkMacSystemFont, "Segoe UI", "SF Pro Text", Helvetica, Arial,
+    sans-serif;
+  letter-spacing: 0.01em;
+  color: var(--intro-ink-muted);
+  flex: 1;
+}
+
+.intro-step__check {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  border: 1.4px solid var(--intro-ring);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  /* per-row delay set below via :nth-child — this is an instant flip (0.001s), so the delay
+     alone is what makes it land right after that row's check-mark draws. */
+  animation: intro-check-fill 0.001s linear forwards;
+}
+
+.intro-step:nth-child(1) .intro-step__check {
+  animation-delay: 0.83s;
+}
+.intro-step:nth-child(2) .intro-step__check {
+  animation-delay: 1.05s;
+}
+.intro-step:nth-child(3) .intro-step__check {
+  animation-delay: 1.27s;
+}
+
+@keyframes intro-check-fill {
+  to {
+    border-color: var(--intro-ok);
+    background: var(--intro-ok);
+  }
+}
+
+.intro-check-svg {
+  width: 9px;
+  height: 9px;
+  overflow: visible;
+}
+
+.intro-check-path {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 16;
+  stroke-dashoffset: 16;
+  animation: intro-draw 0.18s ease-out forwards;
+}
+
+.intro-step:nth-child(1) .intro-check-path {
+  animation-delay: 0.87s;
+}
+.intro-step:nth-child(2) .intro-check-path {
+  animation-delay: 1.09s;
+}
+.intro-step:nth-child(3) .intro-check-path {
+  animation-delay: 1.31s;
+}
+
+@keyframes intro-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* --- trace moment: Auto-P mark resolves + wordmark --- */
+.intro-stage__brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  /* No opacity/animation of its own — each child (mark strokes, wordmark, tagline) already
+     starts from its own resting hidden state and reveals on its own delay below, so the
+     group itself just needs to sit in the shared slot. */
+}
+
+.intro-mark {
+  width: 64px;
+  height: 64px;
+}
+
+.intro-mark__loop {
+  stroke: #8b7bff;
+  stroke-width: 18;
+  stroke-linecap: round;
+  stroke-dasharray: 960;
+  stroke-dashoffset: 960;
+  animation: intro-draw-mark 0.34s ease-out 1.55s forwards;
+}
+
+.intro-mark__arrow {
+  fill: #8b7bff;
+  opacity: 0;
+  transform-origin: 205px 100px;
+  animation: intro-arrow-in 0.14s ease-out 1.85s forwards;
+}
+
+.intro-mark__p {
+  stroke: #6d5cf6;
+  stroke-width: 46;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 680;
+  stroke-dashoffset: 680;
+  animation: intro-draw-mark 0.34s ease-out 1.68s forwards;
+}
+
+@keyframes intro-draw-mark {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes intro-arrow-in {
+  from {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.intro-wordmark {
+  margin: 0;
+  font: 650 17px/1.1 -apple-system, BlinkMacSystemFont, "Segoe UI", "SF Pro Text", Helvetica, Arial,
+    sans-serif;
+  letter-spacing: 0.01em;
+  color: var(--intro-ink);
+  opacity: 0;
+  transform: translateY(8px);
+  animation: intro-rise 0.28s var(--intro-ease) 1.95s forwards;
+}
+
+.intro-tagline {
+  margin: 0;
+  font: 600 10px/1 -apple-system, BlinkMacSystemFont, "Segoe UI", "SF Pro Text", Helvetica, Arial,
+    sans-serif;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8b7bff;
+  opacity: 0;
+  transform: translateY(6px);
+  animation: intro-rise 0.24s var(--intro-ease) 2.1s forwards;
+}
+
+/* ============================================================================
+   Reduced motion: collapse every keyframe to its resolved end-state so the
+   whole composition (checked steps + resolved mark) is visible immediately,
+   near-static. The container's own opacity transition (top of file) still
+   drives the fade-out — motion is reduced, not removed entirely.
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .intro-loader * {
+    animation-duration: 0.001ms !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  .intro-blob,
+  .intro-stars {
+    animation: none !important;
+  }
+
+  .intro-stage__device {
+    animation: none !important;
+    opacity: 0 !important;
+  }
+
+  .intro-tap-dot,
+  .intro-ripple {
+    display: none !important;
+  }
+
+  .intro-step,
+  .intro-step__check,
+  .intro-check-path,
+  .intro-stage__brand,
+  .intro-mark__loop,
+  .intro-mark__arrow,
+  .intro-mark__p,
+  .intro-wordmark,
+  .intro-tagline {
+    opacity: 1 !important;
+    transform: none !important;
+    stroke-dashoffset: 0 !important;
+  }
+}

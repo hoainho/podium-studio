@@ -1,0 +1,56 @@
+Podium Studio — Proprietary Software License (Evaluation / Trial)
+
+Copyright © 2026 Hoài Nhớ. All rights reserved.
+
+IMPORTANT — READ CAREFULLY. This is a license agreement, not a sale. Podium
+Studio (the "Software"), including its source code, binaries, assets, and
+documentation, is proprietary and remains the exclusive property of the
+copyright holder. By downloading, installing, accessing, or using the Software,
+you agree to the terms below. If you do not agree, do not use the Software.
+
+1. EVALUATION LICENSE
+   The copyright holder grants you a personal, non-exclusive, non-transferable,
+   revocable license to install and use the Software solely for internal
+   evaluation and non-commercial testing purposes ("Trial"). No fee is charged
+   for the Trial; paid commercial plans may be offered in the future under
+   separate terms.
+
+2. RESTRICTIONS
+   You may NOT, in whole or in part: (a) redistribute, sublicense, sell, rent,
+   lease, or host the Software as a service; (b) use the Software or its output
+   for commercial production purposes except as expressly permitted in writing
+   by the copyright holder; (c) modify, adapt, translate, or create derivative
+   works for distribution; (d) reverse engineer, decompile, or disassemble any
+   compiled component except to the extent applicable law expressly permits; or
+   (e) remove or alter any proprietary notice, logo, or attribution.
+
+3. SOURCE VISIBILITY
+   Source code in this repository is made visible for transparency and
+   evaluation only. Visibility does not grant any right beyond Section 1, and
+   in particular grants no open-source rights.
+
+4. OWNERSHIP
+   All title, ownership, and intellectual property rights in and to the
+   Software, including the "Podium Studio" name and logo, remain with the
+   copyright holder. All rights not expressly granted are reserved.
+
+5. THIRD-PARTY COMPONENTS
+   The Software depends on third-party open-source components, each governed by
+   its own license (see each dependency's license). This license applies only
+   to the original work of the copyright holder.
+
+6. NO WARRANTY
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT.
+
+7. LIMITATION OF LIABILITY
+   IN NO EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES, OR
+   OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE,
+   ARISING FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR ITS USE.
+
+8. TERMINATION
+   This license terminates automatically if you breach any term. On
+   termination, you must stop using and destroy all copies of the Software.
+
+For commercial licensing inquiries, contact the copyright holder.

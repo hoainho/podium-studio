@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "name": "New flow",
+  "app": {
+    "bundleId": "com.example.demoapp",
+    "platform": "ios-sim"
+  },
+  "fixtures": {
+    "charterAnswer": "Go to safari and open github.com, next click to login button"
+  },
+  "steps": [
+    {
+      "id": "4f001fd7-4961-4cd1-b30d-d13696929afc",
+      "action": "screenshot"
+    }
+  ]
+}

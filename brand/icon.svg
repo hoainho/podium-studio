@@ -1,0 +1,37 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Podium Studio">
+  <defs>
+    <linearGradient id="tile" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8b7bff"/>
+      <stop offset="0.55" stop-color="#6d5cf6"/>
+      <stop offset="1" stop-color="#5a2fe0"/>
+    </linearGradient>
+    <linearGradient id="bar" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#e8e5ff"/>
+    </linearGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="18" flood-color="#2a1470" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <!-- app tile (macOS-style rounded square) -->
+  <rect x="0" y="0" width="1024" height="1024" rx="228" fill="url(#tile)"/>
+  <!-- subtle top sheen -->
+  <rect x="0" y="0" width="1024" height="512" rx="228" fill="#ffffff" opacity="0.06"/>
+
+  <!-- podium: three rounded bars, centre tallest; standing on a baseline -->
+  <g filter="url(#soft)">
+    <rect x="250" y="470" width="150" height="278" rx="30" fill="url(#bar)" opacity="0.88"/>
+    <rect x="624" y="540" width="150" height="208" rx="30" fill="url(#bar)" opacity="0.78"/>
+    <rect x="437" y="352" width="150" height="396" rx="34" fill="url(#bar)"/>
+    <!-- baseline platform -->
+    <rect x="214" y="756" width="596" height="46" rx="23" fill="#ffffff" opacity="0.92"/>
+  </g>
+
+  <!-- "pass" check badge on the winner's block -->
+  <g>
+    <circle cx="590" cy="360" r="86" fill="#22c55e"/>
+    <circle cx="590" cy="360" r="86" fill="#000000" opacity="0.05"/>
+    <path d="M551 361 l26 27 l50 -58" fill="none" stroke="#ffffff" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

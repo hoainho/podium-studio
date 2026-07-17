@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "name": "Settings — demo",
+  "description": "Works out of the box on any iOS simulator: iOS Settings is preinstalled, so this flow needs no custom app build. Good first flow to sanity-check the bridge + engine before wiring a real app.",
+  "app": {
+    "bundleId": "com.apple.Preferences",
+    "platform": "ios-sim",
+    "displayName": "Settings"
+  },
+  "steps": [
+    {
+      "id": "shot_open",
+      "label": "Capture a screenshot right after opening Settings",
+      "action": "screenshot"
+    },
+    {
+      "id": "11a8eb11-4f82-4c1c-b502-b20072760f26",
+      "label": "Capture a screenshot right after opening Settings",
+      "action": "screenshot"
+    },
+    {
+      "id": "wait_settle",
+      "label": "Give Settings a moment to render",
+      "action": "waitMs",
+      "ms": 1200
+    },
+    {
+      "id": "assert_general",
+      "label": "Confirm the General row is visible",
+      "action": "assertVisible",
+      "text": "General",
+      "timeoutMs": 10000
+    },
+    {
+      "id": "shot_final",
+      "label": "Capture a final screenshot",
+      "action": "screenshot"
+    }
+  ]
+}

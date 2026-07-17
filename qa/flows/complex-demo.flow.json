@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "name": "Complex — mixed actions",
+  "description": "A deliberately COMPLEX, state-independent flow that exercises the full action vocabulary and BOTH execution paths (native run_steps + per-step Maestro) in one run: screenshot, waits, scroll both directions, swipe, coordinate double-tap & long-press, an optional conditional tap, negative assertions, wait-until-gone, hide-keyboard, and back. Targets iOS Settings so it runs on any booted simulator without a custom build. Every step is designed to pass regardless of which Settings screen is showing.",
+  "app": { "bundleId": "com.apple.Preferences", "platform": "ios-sim", "displayName": "Settings" },
+  "requires": { "resetState": false },
+  "steps": [
+    { "id": "c01", "label": "Capture the starting screen", "action": "screenshot" },
+    { "id": "c02", "label": "Let the UI settle", "action": "waitMs", "ms": 800 },
+    { "id": "c03", "label": "Scroll down the list", "action": "scroll", "direction": "down" },
+    { "id": "c04", "label": "Scroll back up", "action": "scroll", "direction": "up" },
+    { "id": "c05", "label": "Swipe up", "action": "swipe", "direction": "up" },
+    { "id": "c06", "label": "Swipe down", "action": "swipe", "direction": "down" },
+    { "id": "c07", "label": "Double-tap a point", "action": "doubleTap", "x": 200, "y": 380 },
+    { "id": "c08", "label": "Long-press a point", "action": "longPress", "x": 200, "y": 420 },
+    { "id": "c09", "label": "Dismiss a popup only if it appears", "action": "tapIfVisible", "text": "Not Now", "timeoutMs": 2000 },
+    { "id": "c10", "label": "Confirm an error banner is NOT present", "action": "assertNotVisible", "text": "Something went wrong", "timeoutMs": 2500 },
+    { "id": "c11", "label": "Confirm no loading spinner text lingers", "action": "waitForNotVisible", "text": "ZZZ_LOADING_NEVER", "timeoutMs": 3000 },
+    { "id": "c12", "label": "Hide the keyboard if open", "action": "hideKeyboard" },
+    { "id": "c13", "label": "Navigate back", "action": "back" },
+    { "id": "c14", "label": "Capture the final screen", "action": "screenshot" }
+  ]
+}

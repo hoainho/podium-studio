@@ -1,0 +1,8 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Podium Studio mark">
+  <!-- automation loop: symmetric gap at top-centre, tangent arrowhead at the terminus -->
+  <path d="M 314 98 A 168 168 0 1 1 198 98" fill="none" stroke="#8b7bff" stroke-width="18" stroke-linecap="round"/>
+  <path d="M 220 90 L 199 114 L 189 85 Z" fill="#8b7bff"/>
+  <!-- hand-drawn P, primary brand violet, optically centred -->
+  <path d="M 198 350 C 191 280 192 214 197 170 C 256 160 313 174 314 226 C 315 274 256 289 201 280"
+        fill="none" stroke="#6d5cf6" stroke-width="46" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "name": "Login (sub-flow)",
+  "description": "Domain starter-pack template (E13, Pillar F). A parameterized, reusable login sub-flow — call it from another flow via a `callSubFlow` step with { email, pw } params, or run it standalone (it supplies its own ${secret:...}-backed default fixtures below, so it's independently runnable green after only credential/env substitution, per spec AC4). Selector-bearing steps reference shared/library.ts entries by id (\"libraryRef\") instead of hardcoding a locator, so the SAME steps resolve correctly on both a mobile build and a browser build (spec AC2) — a real project swaps the library's placeholder locator values for the actual inspected ones once real device/browser access is available.",
+  "app": {
+    "bundleId": "com.example.demoapp",
+    "platform": "ios-sim",
+    "displayName": "The Demo App"
+  },
+  "params": [
+    { "name": "email", "required": true },
+    { "name": "pw", "required": true }
+  ],
+  "fixtures": {
+    "email": "${secret:demoAppTestEmail}",
+    "pw": "${secret:demoAppTestPassword}"
+  },
+  "steps": [
+    { "id": "s1", "label": "Chạm vào ô email/số điện thoại", "action": "tapText", "libraryRef": "loginEmailField" },
+    { "id": "s2", "label": "Nhập email/số điện thoại", "action": "type", "text": "{{email}}" },
+    { "id": "s3", "label": "Chạm vào ô mật khẩu", "action": "tapText", "libraryRef": "loginPasswordField" },
+    { "id": "s4", "label": "Nhập mật khẩu", "action": "type", "text": "{{pw}}" },
+    { "id": "s5", "label": "Bấm đăng nhập", "action": "tapText", "libraryRef": "loginSubmitButton" },
+    {
+      "id": "s6",
+      "label": "Đóng các thông báo/popup nếu xuất hiện",
+      "action": "repeat",
+      "times": 3,
+      "steps": [
+        { "id": "s6a", "label": "Đóng popup nếu có", "action": "tapIfVisible", "text": "Đóng", "libraryRef": "popupDismissButton" }
+      ]
+    },
+    { "id": "s7", "label": "Kiểm tra đã vào màn hình chính (thấy số dư)", "action": "assertVisible", "text": "Số dư", "libraryRef": "balanceText" }
+  ]
+}

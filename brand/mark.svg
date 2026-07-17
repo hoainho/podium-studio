@@ -1,0 +1,17 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Podium Studio mark">
+  <defs>
+    <linearGradient id="mbar" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8b7bff"/>
+      <stop offset="1" stop-color="#6d5cf6"/>
+    </linearGradient>
+  </defs>
+  <!-- podium: centre tallest -->
+  <rect x="96"  y="232" width="86" height="150" rx="20" fill="url(#mbar)" opacity="0.9"/>
+  <rect x="330" y="272" width="86" height="110" rx="20" fill="url(#mbar)" opacity="0.8"/>
+  <rect x="213" y="168" width="86" height="214" rx="22" fill="url(#mbar)"/>
+  <!-- baseline -->
+  <rect x="74" y="388" width="364" height="28" rx="14" fill="url(#mbar)"/>
+  <!-- pass check -->
+  <circle cx="315" cy="172" r="50" fill="#22c55e"/>
+  <path d="M292 173 l15 16 l30 -35" fill="none" stroke="#ffffff" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

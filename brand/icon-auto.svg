@@ -1,0 +1,25 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Podium Studio">
+  <defs>
+    <linearGradient id="tileG2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8b7bff"/><stop offset="0.5" stop-color="#6d5cf6"/><stop offset="1" stop-color="#5326d8"/>
+    </linearGradient>
+    <filter id="soft2" x="-25%" y="-25%" width="150%" height="150%">
+      <feDropShadow dx="0" dy="10" stdDeviation="16" flood-color="#1c0e3a" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <!-- solid full-bleed tile: clean dock icon, no transparency -->
+  <rect width="1024" height="1024" rx="228" fill="url(#tileG2)"/>
+  <rect width="1024" height="512" rx="228" fill="#ffffff" opacity="0.07"/>
+
+  <!-- automation loop: symmetric gap at top-centre (both ends at y=192, mirrored about x=512),
+       arrowhead placed exactly on the arc terminus along its tangent -->
+  <g filter="url(#soft2)">
+    <path d="M 628 192 A 340 340 0 1 1 396 192" fill="none" stroke="#ffffff" stroke-width="30" stroke-linecap="round"/>
+    <path d="M 439 176 L 399 223 L 378 167 Z" fill="#ffffff"/>
+  </g>
+
+  <!-- hand-drawn "P": one loose marker stroke (stem + open bowl), optically centred -->
+  <path d="M 396 700 C 382 560 384 428 394 340 C 511 320 626 348 628 452 C 630 548 511 578 402 560"
+        fill="none" stroke="#ffffff" stroke-width="92" stroke-linecap="round" stroke-linejoin="round" filter="url(#soft2)"/>
+</svg>

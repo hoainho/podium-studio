@@ -1,0 +1,16 @@
+name: Feature request / feedback
+description: Suggest an improvement or share feedback
+labels: [enhancement]
+body:
+  - type: textarea
+    id: outcome
+    attributes:
+      label: What outcome do you want?
+      description: Describe the result you're after, not just a UI tweak.
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Who is it for / when does it help?
+      description: e.g. "a first-day intern authoring their first web test".
